@@ -31,7 +31,7 @@ var scaleX = d3.scale.linear().domain([1960,2015]).range([0,width]),
 var lineGenerator = d3.svg.line()
     .x(function(d){return scaleX(d.year)})
     .y(function(d){return scaleY(d.value)})
-    .interpolate('basis')
+    .interpolate('step')
 
 //Axis
 var axisX = d3.svg.axis()
@@ -90,31 +90,55 @@ function dataLoaded(error,data, rows){
         .datum(nestedData[0].values)
         .attr('class','data-line tea-data-line')
         .attr('d',lineGenerator)
-
-    var teaPoint=plot.selectAll('.data-point tea-data-point')
+//tea
+    var teaPoint=plot.selectAll('.coffee-data-point tea-data-point')
         .data(nestedData[0].values)
 
     var teaEnter=teaPoint.enter()//51 data
-        .append('circle').attr('class','data-point')//see CSS
+        .append('g')
+        .attr('class','Tea')
+
+        teaEnter
+        .append('circle').attr('class','data-point tea-data-point')//see CSS
         .attr('cx',function(d){return scaleX(d.year)} )
         .attr('cy',function(d){return scaleY(d.value)})
-        .attr('r',2)
+        .attr('r',8)
+        .style('opacity',0)
         .call(attachTooltip)
+
+        teaEnter
+            .append('circle').attr('class','data-point tea-data-point')//see CSS
+            .attr('cx',function(d){return scaleX(d.year)} )
+            .attr('cy',function(d){return scaleY(d.value)})
+            .attr('r',2)
+          .style('opacity',1)
+
 
     plot.append('path')
         .datum(nestedData[1].values)
         .attr('class','data-line coffee-data-line')
         .attr('d',lineGenerator)
-
+//coffee
     var coffeePoint=plot.selectAll('.data-point coffee-data-point')
         .data(nestedData[1].values)
     var coffeeEnter=coffeePoint.enter()//51 data
-        .append('circle').attr('class','data-point')//see CSS
+        .append('g')
+        .attr('class','Coffee')
+        coffeeEnter
+        .append('circle').attr('class','data-point tea-data-point')//see CSS
         .attr('cx',function(d){return scaleX(d.year)} )
         .attr('cy',function(d){return scaleY(d.value)})
-        .attr('r',3)
-
+        .attr('r',8)
+        .style('opacity',0)
         .call(attachTooltip)
+
+        coffeeEnter
+            .append('circle').attr('class','data-point coffee-data-point')//see CSS
+            .attr('cx',function(d){return scaleX(d.year)} )
+            .attr('cy',function(d){return scaleY(d.value)})
+            .attr('r',2)
+            .style('opacity',1)
+
 
 
 }
@@ -145,36 +169,3 @@ function dataLoaded(error,data, rows){
          }
              )
  }
-//draw value)})
-//var timeSeries=d3.selectAll('path')//yields a selection of 0 <path> elements
-//       .data(nestedData) //joins to an array of two objects
-//       .enter()
-//       //.append('g')
-//        .append('path')
-//       .attr('class',function(d){return d.key})//each element will have class of either "coffee" or "tea"
-//    timeSeries
-//    .attr('d',function(d){return lineGenerator(d.values)})
-
-
-//.on('mouseenter',function(d){
-//    console.log(d)
-//    var tooltip=d3.select('.custom-tooltip');
-//    tooltip.transition().style('opacity',1);
-//
-//    tooltip.select('#type').html(d.item);
-//    tooltip.select('#year').html(d.year);
-//    tooltip.select('#value').html(d.value);
-//})
-//    .on('mouseleave',function(d){
-//        d3.select('.custom-tooltip').transition().style('opacity',0);
-//    })
-//    .on('mousemove',function(d){//happen frequently
-//        var xy=d3.mouse(document.getElementById('plot'))//finding the position of mouse in relationship with the canvas
-//
-//        var left=xy[0], top=xy[1];
-//
-//        console.log(xy);
-//        d3.select('.custom-tooltip')
-//            .style('left',left+50+'px')
-//            .style('top',top+50+'px')
-//    })
